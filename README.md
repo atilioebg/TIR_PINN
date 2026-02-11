@@ -457,30 +457,33 @@ Armazena todos os dados de entrada e saída intermédiarios.
 
 ## 10. Data Structure & Project Files
 
-Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), os arquivos individuais mais pesados **não foram carregados** no GitHub. No entanto, a **estrutura completa de pastas foi sincronizada** para garantir a organização do projeto.
+Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. A **estrutura completa de pastas foi sincronizada** em todos os níveis para garantir a organização do projeto.
 
-### 📂 `data/raw/` (Arquivos Brutos)
-Estes arquivos foram carregados no GitHub para facilitar o setup inicial, exceto pela biblioteca ECOSTRESS completa devido ao seu tamanho.
-*   **`ecospeclib/`**: Biblioteca Espectral ECOSTRESS reduzida (**Sincronizada no GitHub**). Para a biblioteca completa, deve ser baixada separadamente.
-*   **`spectral_libraries/`**:
+### 📂 `data/raw/` (Arquivos Brutos - Sincronizados)
+Estes arquivos **foram carregados no GitHub** para facilitar o setup inicial, pois são essenciais para os scripts de geração. A única exceção é a biblioteca ECOSTRESS bruta completa (que deve ser baixada individualmente se necessário).
+
+*   **`ecospeclib/`**: Biblioteca Espectral ECOSTRESS reduzida (**Sincronizada no GitHub**).
+*   **`spectral_libraries/`**: Contém os arquivos `.txt` curados e os logs de metadados:
     *   `summary_log.csv`: Metadados completos da biblioteca original (**Sincronizado no GitHub**).
     *   `*_log_cleaned.csv`: Metadados limpos após curadoria (**Sincronizado no GitHub**).
+*   **`mock_spectral_libraries/`**: Espectros mock para testes (**Sincronizado no GitHub**).
+*   **`modtran_exe/`**: Binários ou utilitários para MODTRAN (**Sincronizado no GitHub**).
 
-### 📂 `data/processed/` (Arquivos Não Carregados - Grandes)
-**A estrutura de pastas deste diretório está sincronizada**, mas os arquivos listados abaixo excedem o limite do GitHub e devem ser gerados localmente conforme as instruções:
+### 📂 `data/processed/` (Apenas Estrutura Sincronizada)
+Os arquivos individuais neste diretório são muito grandes (>18GB no total) e **não foram carregados**. Entretanto, todas as subpastas abaixo foram criadas no repositório (via `.gitkeep`) para que os scripts funcionem imediatamente após a geração local:
 
 1.  **`ground_truth/ground_truth_dataset.pkl`** (~2GB)
-    *   **O que é**: Contém o Ground Truth físico (Temperatura e Emissividade) extraído e normalizado de todos os alvos selecionados.
+    *   **O que é**: Ground Truth físico (Temperatura e Emissividade).
     *   **Como gerar**: Execute `python src/data_generation/base/generate_ground_truth.py`.
 
 2.  **`synthetic_dataset/synthetic_dataset_hytes.pt`** (~3GB)
-    *   **O que é**: O dataset final em formato PyTorch Tensor, contendo a radiância (entrada) pareada com T e E (saída) para o sensor HyTES.
+    *   **O que é**: Dataset final para o sensor HyTES.
     *   **Como gerar**: Execute `python src/data_generation/base/create_final_dataset.py --sensor hytes`.
 
 3.  **`synthetic_dataset/train_dataset.pkl`**
-    *   **O que é**: Arquivo intermediário em formato Pickle contendo a radiância sintética antes da conversão para tensores.
-    *   **Como gerar**: Gerado automaticamente durante o pipeline de simulação de sensores.
+    *   **O que é**: Arquivo intermediário de radiância.
+    *   **Como gerar**: Gerado durante o pipeline de simulação.
 
 4.  **`atmospheric_luts/`**
-    *   **O que é**: Tabelas de consulta (Look-Up Tables) contendo transmitância, radiância de descida e subida simuladas via MODTRAN 5.
-    *   **Como gerar**: Execute `python src/data_generation/base/automate_modtran.py` (requer MODTRAN 5 instalado em ambiente Windows).
+    *   **O que é**: Look-Up Tables do MODTRAN.
+    *   **Como gerar**: Execute `python src/data_generation/base/automate_modtran.py`.
