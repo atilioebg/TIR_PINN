@@ -7,27 +7,5 @@ __pycache__/
 .idea/
 
 # Data
-data/*
-
-# Allow traversing raw directory
-!data/raw/
-
-# Ignore everything in raw by default
-data/raw/*
-
-# Exceptions in raw
-!data/raw/.gitkeep
-!data/raw/ecospeclib/
-!data/raw/spectral_libraries/
-
-# Ignore everything in spectral_libraries by default
-data/raw/spectral_libraries/*
-
-# Exceptions in spectral_libraries
-!data/raw/spectral_libraries/summary_log.csv
-!data/raw/spectral_libraries/*_log_cleaned.csv
-
-# Processed is handled by data/* but we need to keep the .gitkeep
-!data/processed/
 data/processed/*
-!data/processed/.gitkeep
+!data/processed/**/.gitkeep

@@ -457,20 +457,10 @@ Armazena todos os dados de entrada e saída intermédiarios.
 
 ## 10. Data Structure & Project Files
 
-Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. A **estrutura completa de pastas foi sincronizada** em todos os níveis para garantir a organização do projeto.
+Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), os arquivos individuais listados abaixo **não foram carregados** no GitHub. Entretanto, todas as subpastas foram preservadas no repositório (via `.gitkeep`) para garantir a organização e o funcionamento imediato dos scripts após a geração local.
 
-### 📂 `data/raw/` (Arquivos Brutos - Sincronizados)
-Estes arquivos **foram carregados no GitHub** para facilitar o setup inicial, pois são essenciais para os scripts de geração. A única exceção é a biblioteca ECOSTRESS bruta completa (que deve ser baixada individualmente se necessário).
-
-*   **`ecospeclib/`**: Biblioteca Espectral ECOSTRESS reduzida (**Sincronizada no GitHub**).
-*   **`spectral_libraries/`**: Contém os arquivos `.txt` curados e os logs de metadados:
-    *   `summary_log.csv`: Metadados completos da biblioteca original (**Sincronizado no GitHub**).
-    *   `*_log_cleaned.csv`: Metadados limpos após curadoria (**Sincronizado no GitHub**).
-*   **`mock_spectral_libraries/`**: Espectros mock para testes (**Sincronizado no GitHub**).
-*   **`modtran_exe/`**: Binários ou utilitários para MODTRAN (**Sincronizado no GitHub**).
-
-### 📂 `data/processed/` (Apenas Estrutura Sincronizada)
-Os arquivos individuais neste diretório são muito grandes (>18GB no total) e **não foram carregados**. Entretanto, todas as subpastas abaixo foram criadas no repositório (via `.gitkeep`) para que os scripts funcionem imediatamente após a geração local:
+### 📂 `data/processed/` (Arquivos Não Carregados - Grandes)
+Os arquivos abaixo excedem o limite de tamanho do GitHub e devem ser gerados localmente conforme as instruções:
 
 1.  **`ground_truth/ground_truth_dataset.pkl`** (~2GB)
     *   **O que é**: Ground Truth físico (Temperatura e Emissividade).
