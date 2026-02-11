@@ -1,0 +1,7 @@
+run_id,atm_model,water_vapor,view_angle,output_file
+run_0000_atm2_h2o0.5_ang180.0,2,0.5,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0000_atm2_h2o0.5_ang180.0_tape7.txt
+run_0001_atm2_h2o1.0_ang180.0,2,1.0,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0001_atm2_h2o1.0_ang180.0_tape7.txt
+run_0002_atm2_h2o2.0_ang180.0,2,2.0,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0002_atm2_h2o2.0_ang180.0_tape7.txt
+run_0003_atm3_h2o0.5_ang180.0,3,0.5,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0003_atm3_h2o0.5_ang180.0_tape7.txt
+run_0004_atm3_h2o1.0_ang180.0,3,1.0,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0004_atm3_h2o1.0_ang180.0_tape7.txt
+run_0005_atm3_h2o2.0_ang180.0,3,2.0,180.0,C:\Users\Atilio\Desktop\PROJETOS\PESSOAL\IATIR\data\processed\atmospheric_luts\run_0005_atm3_h2o2.0_ang180.0_tape7.txt
