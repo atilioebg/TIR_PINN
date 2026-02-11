@@ -457,23 +457,19 @@ Armazena todos os dados de entrada e saída intermédiarios.
 
 ## 10. Data Structure & Project Files
 
-Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), os arquivos individuais listados abaixo **não foram carregados** no GitHub. Entretanto, todas as subpastas foram preservadas no repositório (via `.gitkeep`) para garantir a organização e o funcionamento imediato dos scripts após a geração local.
+Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), apenas os arquivos individuais gigantes listed abaixo **não foram carregados** no GitHub. Toda a estrutura de pastas e arquivos de controle (logs, CSVs de parâmetros e LUTs .txt) foram sincronizados.
 
-### 📂 `data/processed/` (Arquivos Não Carregados - Grandes)
-Os arquivos abaixo excedem o limite de tamanho do GitHub e devem ser gerados localmente conforme as instruções:
+### 📂 `data/processed/` (Arquivos GIGANTES Não Carregados)
+Os arquivos abaixo devem ser gerados localmente conforme as instruções, pois excedem o limite de tamanho:
 
 1.  **`ground_truth/ground_truth_dataset.pkl`** (~2GB)
-    *   **O que é**: Ground Truth físico (Temperatura e Emissividade).
+    *   **O que é**: Ground Truth físico (Temperatura e Emissividade) completo.
     *   **Como gerar**: Execute `python src/data_generation/base/generate_ground_truth.py`.
 
 2.  **`synthetic_dataset/synthetic_dataset_hytes.pt`** (~3GB)
-    *   **O que é**: Dataset final para o sensor HyTES.
+    *   **O que é**: Dataset final em formato PyTorch Tensor para o sensor HyTES.
     *   **Como gerar**: Execute `python src/data_generation/base/create_final_dataset.py --sensor hytes`.
 
-3.  **`synthetic_dataset/train_dataset.pkl`**
-    *   **O que é**: Arquivo intermediário de radiância.
-    *   **Como gerar**: Gerado durante o pipeline de simulação.
-
-4.  **`atmospheric_luts/`**
-    *   **O que é**: Look-Up Tables do MODTRAN.
-    *   **Como gerar**: Execute `python src/data_generation/base/automate_modtran.py`.
+3.  **`final_datasets/*.pt`** (Volumes Variados)
+    *   **O que é**: Tensores finais de treino e validação prontos para o modelo.
+    *   **Como gerar**: Execute os scripts de treinamento ou geração de tensores finais.
