@@ -457,16 +457,17 @@ Armazena todos os dados de entrada e saída intermédiarios.
 
 ## 10. Data Structure & Project Files
 
-Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), os arquivos mais pesados **não foram carregados** no GitHub. Abaixo está a descrição de como o projeto organiza os dados e como gerar os arquivos ausentes.
+Este repositório contém o código-fonte, bibliotecas auxiliares e metadados. Devido ao grande volume de dados processados (~18GB), os arquivos individuais mais pesados **não foram carregados** no GitHub. No entanto, a **estrutura completa de pastas foi sincronizada** para garantir a organização do projeto.
 
 ### 📂 `data/raw/` (Arquivos Brutos)
-*   **`ecospeclib/`**: Biblioteca Espectral ECOSTRESS bruta. Deve ser baixada separadamente e colocada nesta pasta.
+Estes arquivos foram carregados no GitHub para facilitar o setup inicial, exceto pela biblioteca ECOSTRESS completa devido ao seu tamanho.
+*   **`ecospeclib/`**: Biblioteca Espectral ECOSTRESS reduzida (**Sincronizada no GitHub**). Para a biblioteca completa, deve ser baixada separadamente.
 *   **`spectral_libraries/`**:
     *   `summary_log.csv`: Metadados completos da biblioteca original (**Sincronizado no GitHub**).
     *   `*_log_cleaned.csv`: Metadados limpos após curadoria (**Sincronizado no GitHub**).
 
 ### 📂 `data/processed/` (Arquivos Não Carregados - Grandes)
-Os arquivos abaixo excedem o limite de tamanho do GitHub e devem ser gerados localmente conforme as instruções:
+**A estrutura de pastas deste diretório está sincronizada**, mas os arquivos listados abaixo excedem o limite do GitHub e devem ser gerados localmente conforme as instruções:
 
 1.  **`ground_truth/ground_truth_dataset.pkl`** (~2GB)
     *   **O que é**: Contém o Ground Truth físico (Temperatura e Emissividade) extraído e normalizado de todos os alvos selecionados.
