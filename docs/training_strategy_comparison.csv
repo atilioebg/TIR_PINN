@@ -1,0 +1,6 @@
+Categoria,Parâmetro,Generalista 1.0 (Atual),Generalista 2.0 (Proposto),Especialista (Fine-Tuning)
+Geração de Dados,Ruído de Amplitude,± 1.0%,± 0.5%,± 0.1%
+(Robustez),Ruído Aditivo,0.005,0.002,0.0005
+,Interpretação,Muito ruidoso. A rede ignora detalhes finos para não decorar o ruído.,Equilibrado. Permite ver absorções sutis sem perder a robustez.,Quase puro. Focado em precisão cirúrgica.
+Treinamento,Shape Loss (w_curv),1.0 (Mas dominado pelo ruído),0.5 (Com dados mais limpos),2.0 (HyTES) / 0.0 (ASTER)
+(Física),Foco Principal,Média Estatística (MSE),Forma + Média (Híbrido),Derivada/Forma (Shape)

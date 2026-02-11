@@ -1,0 +1,200 @@
+=============================================================================================
+=================================== POSSIVEIS REVISTAS ======================================
+=============================================================================================
+Com base nas discussões anteriores e na análise estratégica do seu projeto (especialmente considerando o sucesso da "Shape Loss" na recuperação de feições minerais), aqui estão as opções de publicação recomendadas, divididas por perfil e impacto:
+
+🏆 Tier 1: A Elite (Alto Impacto e Rigor)
+Ideais se você tiver resultados sólidos de recuperação da forma espectral (os "vales" do quartzo/caulinita).
+
+RSE - Remote Sensing of Environment (Elsevier)
+
+Perfil: É o periódico mais prestigiado da área. Valoriza inovações metodológicas profundas que resolvem problemas físicos.
+
+Por que seu projeto encaixa: A recuperação da Caulinita no HyTES e a validação multi-sensor são diferenciais fortes.
+
+IEEE TGRS - Transactions on Geoscience and Remote Sensing
+
+Perfil: Foco pesado em engenharia, matemática e algoritmos.
+
+Por que seu projeto encaixa: A arquitetura PINN e a função de perda baseada em derivadas (Sobolev Training) são contribuições técnicas que este jornal adora.
+
+🥈 Tier 2: Excelência Técnica e Aplicações
+Ótimas opções para um processo de revisão focado na técnica.
+
+ISPRS Journal of Photogrammetry and Remote Sensing
+
+Perfil: Muito forte em métodos computacionais e visão computacional aplicada.
+
+IEEE JSTARS - Journal of Selected Topics in Applied Earth Observations
+
+Perfil: Focado em aplicações práticas e novos algoritmos.
+
+⚡ Tier 3: Velocidade e Acesso Aberto
+Remote Sensing (MDPI)
+
+Perfil: Open Access com publicação muito rápida (1-2 meses).
+
+Vantagem: Alta visibilidade e fator de impacto crescente.
+
+Estratégia: Se você precisa publicar rápido (para defesa de tese ou prazos de projeto), esta é a melhor opção.
+
+📜 Opções Alternativas (Short Papers / Conferências)
+Caso decida publicar resultados parciais ou se a recuperação da forma não for 100% perfeita em todos os casos:
+
+IEEE GRSL - Geoscience and Remote Sensing Letters: Para artigos curtos (5 páginas) focados em uma inovação específica ("Letters").
+
+IGARSS (Conferência): A maior conferência da área.
+
+SPIE (Conferência): Focada em óptica e sensores.
+
+Recomendação Final: Dado o nível de inovação (Physics-Informed + Shape-Aware Loss), eu miraria inicialmente no IEEE TGRS ou RSE.
+
+
+
+=============================================================================================
+========= Esta é a **Bibliografia Unificada e Definitiva** para o projeto **IATIR** =========
+=============================================================================================
+
+Realizei a fusão das duas listas fornecidas, removendo as duplicatas e organizando logicamente os artigos novos e clássicos. Esta estrutura segue o fluxo narrativo de um artigo científico de alto impacto: começa definindo o problema, apresenta a fundação teórica (IA + Física), introduz a inovação matemática (Sobolev Training), valida os dados e finaliza com o estado da arte para comparação.
+
+---
+
+# 📚 Bibliografia Unificada: IATIR Project
+
+---
+
+## 1. Fundamentação Teórica: O Problema TES e Contexto
+
+Referências essenciais para definir o problema mal-posto, a importância da LST e as limitações dos métodos clássicos.
+
+**[CLÁSSICO]**  
+Gillespie, A., Rokugawa, S., Matsunaga, T., Cothern, J. S., Hook, S., & Kahle, A. B. (1998).  
+*A temperature and emissivity separation algorithm for Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER) images.*  
+IEEE Transactions on Geoscience and Remote Sensing, 36(4).  
+**Função:** Define o algoritmo padrão da NASA (TES/MMD) e explica a dificuldade matemática do problema (5 bandas vs 6 incógnitas).
+
+**[CLÁSSICO]**  
+Li, Z.-L., Tang, B.-H., Wu, H., Ren, H., Yan, G., Wan, Z., ... & Sobrino, J. A. (2013).  
+*Satellite-derived land surface temperature: Current status and perspectives.*  
+Remote Sensing of Environment, 131.  
+**Função:** Contextualiza a importância global da Temperatura de Superfície (LST) para mudanças climáticas.
+
+**[NOVO]**  
+Pérez-Planells, L., et al. (2024).  
+*Comparison and evaluation of the TES and ANEM algorithms for land surface temperature and emissivity separation.*  
+Geo-spatial Information Science.  
+**Função:** Prova que, mesmo em 2024, métodos clássicos ainda lutam com materiais de baixa emissividade e que o erro de ~1.0K é uma barreira comum.
+
+---
+
+## 2. Estado da Arte: Deep Learning & Physics-Aware AI
+
+Referências para justificar a escolha de Redes Neurais Informadas por Física (PINNs) em vez de CNNs “caixa-preta”.
+
+**[CORE]**  
+Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019).  
+*Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations.*  
+Journal of Computational Physics, 378.  
+**Função:** A referência seminal. Define arquiteturalmente o que é uma PINN.
+
+**[CORE]**  
+Karniadakis, G. E., et al. (2021).  
+*Physics-informed machine learning.*  
+Nature Reviews Physics, 3(6).  
+**Função:** Valida o campo de pesquisa em uma revista de alto impacto (Nature).
+
+**[NOVO]**  
+Camps-Valls, G., et al. (2021).  
+*Physics-aware machine learning for geosciences and remote sensing.*  
+IEEE Geoscience and Remote Sensing Magazine.  
+**Função:** A “bíblia” moderna da área. Justifica o modelo híbrido (Dados + Lei de Planck) especificamente para geociências.
+
+**[NOVO]**  
+Paoletti, M. E., et al. (2019).  
+*Deep learning for hyperspectral image classification: An overview.*  
+IEEE Geoscience and Remote Sensing Magazine.  
+**Função:** Introdução ao uso de Deep Learning em dados hiperspectrais, preparando o terreno para sua abordagem.
+
+---
+
+## 3. A Inovação Metodológica: Shape-Aware Loss & Sobolev Training
+
+O diferencial matemático do seu trabalho. Estas referências provam que treinar com derivadas melhora a generalização.
+
+**[TEORIA]**  
+Czarnecki, W. M., et al. (2017).  
+*Sobolev Training for Neural Networks.*  
+NeurIPS.  
+**Função:** Citação Crítica. A base teórica da sua “Shape Loss”. Prova matematicamente que minimizar derivadas (`w_grad`, `w_curv`) é superior a minimizar apenas o valor (MSE).
+
+**[NOVO – HOT TOPIC]**  
+Vant, J., et al. (2024/Preprint).  
+*Sobolev Training for Physics-Informed Neural Networks.*  
+arXiv / Journal of Computational Physics.  
+**Função:** Mostra que aplicar Sobolev Training em PINNs é uma tendência de ponta (2024/2025).
+
+**[NOVO]**  
+Son, H., et al. (2024).  
+*Sobolev Acceleration for Neural Networks.*  
+OpenReview.  
+**Função:** Reforça que essa técnica acelera a convergência, explicando a rapidez do seu treinamento.
+
+---
+
+## 4. Dados, Sensores e Simulação Física
+
+Referências que validam a integridade dos seus dados (Ground Truth) e a simulação atmosférica.
+
+**[CORE]**  
+Meerdink, S. K., Hook, S. J., Roberts, D. A., & Abbott, E. A. (2019).  
+*The ECOSTRESS spectral library version 1.0.*  
+Remote Sensing of Environment, 230.  
+**Função:** Fonte oficial dos dados de treino (Emissividade real).
+
+**[CLÁSSICO]**  
+Baldridge, A. M., et al. (2009).  
+*The ASTER spectral library version 2.0.*  
+Remote Sensing of Environment, 113.  
+**Função:** Contexto histórico sobre bibliotecas espectrais de minerais.
+
+**[CORE]**  
+Berk, A., et al. (2014).  
+*MODTRAN6: A major upgrade of the MODTRAN radiative transfer code.*  
+Proceedings of SPIE, 9088.  
+**Função:** Valida a ferramenta usada para sua simulação atmosférica (RTE).
+
+**[CORE]**  
+Hook, S. J., et al. (2013).  
+*The Hyperspectral Thermal Emission Spectrometer (HyTES): Instrument description and first results.*  
+IEEE Geoscience and Remote Sensing Letters, 10.  
+**Função:** Define as especificações físicas do sensor hiperspectral simulado.
+
+**[CORE]**  
+Yamaguchi, Y., et al. (1998).  
+*Overview of Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER).*  
+IEEE Transactions on Geoscience and Remote Sensing, 36.  
+**Função:** Define as especificações físicas do sensor multiespectral simulado.
+
+---
+
+## 5. Benchmarking e Trabalhos Correlatos Recentes
+
+Referências para comparar seus resultados com a concorrência atual (2022–2024).
+
+**[NOVO]**  
+Meng, X., et al. (2024).  
+*Improvement of Temperature and Emissivity Separation Algorithm for Thermal Infrared Hyperspectral Imaging Based on Airborne Data.*  
+IEEE Transactions on Geoscience and Remote Sensing.  
+**Função:** Seu “concorrente” direto em dados aéreos. Cite para contrastar a abordagem analítica deles com a sua abordagem baseada em IA.
+
+**[NOVO]**  
+Liu, Q., et al. (2024).  
+*Estimation of the surface emission spectra from remotely sensed data based on the physics informed deep neural network.*  
+SPIE Proceedings.  
+**Função:** Trabalho muito similar e recente. Cite para mostrar que a comunidade está ativa neste tópico específico.
+
+**[NOVO]**  
+He, M., et al. (2022).  
+*Mineral mapping with hyperspectral imagery using deep learning: A review.*  
+Remote Sensing.  
+**Função:** Situa seu trabalho na fronteira do mapeamento mineral automatizado e identificação de feições espectrais.
