@@ -9,3 +9,8 @@ __pycache__/
 # Data
 data/processed/*
 !data/processed/**/.gitkeep
+
+# Internal Notes, Planning, & Bundles
+clarification.md
+implementation_plan_scientific_paper.md
+manuscript_arxiv.zip
