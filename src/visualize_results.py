@@ -35,7 +35,17 @@ def run_visualization(
     if model_type == 'base':
         MODEL_PATH = os.path.join(PROJECT_ROOT, 'outputs', f'final_model_{sensor}.pth')
     else: # refined
-        MODEL_PATH = os.path.join(PROJECT_ROOT, 'src', 'model_fine_tuning', f'refined_model_{sensor}.pth')
+        primary = os.path.join(PROJECT_ROOT, 'src', 'training', 'fine_tuning', f'refined_model_{sensor}.pth')
+        fallback_data = os.path.join(PROJECT_ROOT, 'src', 'data_generation', 'fine_tuning', f'refined_model_{sensor}.pth')
+        fallback_out = os.path.join(PROJECT_ROOT, 'outputs', f'refined_model_{sensor}.pth')
+        if os.path.exists(primary):
+            MODEL_PATH = primary
+        elif os.path.exists(fallback_data):
+            MODEL_PATH = fallback_data
+        elif os.path.exists(fallback_out):
+            MODEL_PATH = fallback_out
+        else:
+            MODEL_PATH = primary
         
     # Optional Base Model for comparison
     MODEL_PATH_BASE = os.path.join(PROJECT_ROOT, 'outputs', f'final_model_{sensor}.pth')

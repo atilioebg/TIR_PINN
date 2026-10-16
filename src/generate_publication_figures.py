@@ -30,7 +30,17 @@ def load_model(sensor: str, type: str = 'base', device: str = 'cpu') -> Optional
     if type == 'base':
         path = os.path.join(PROJECT_ROOT, 'outputs', f'final_model_{sensor}.pth')
     else:
-        path = os.path.join(PROJECT_ROOT, 'src', 'model_fine_tuning', f'refined_model_{sensor}.pth')
+        primary = os.path.join(PROJECT_ROOT, 'src', 'training', 'fine_tuning', f'refined_model_{sensor}.pth')
+        fallback_data = os.path.join(PROJECT_ROOT, 'src', 'data_generation', 'fine_tuning', f'refined_model_{sensor}.pth')
+        fallback_out = os.path.join(PROJECT_ROOT, 'outputs', f'refined_model_{sensor}.pth')
+        if os.path.exists(primary):
+            path = primary
+        elif os.path.exists(fallback_data):
+            path = fallback_data
+        elif os.path.exists(fallback_out):
+            path = fallback_out
+        else:
+            path = primary
         
     if not os.path.exists(path):
         print(f"Warning: Model not found at {path}")

@@ -8,6 +8,7 @@ from scipy.interpolate import interp1d
 from tqdm import tqdm
 import argparse
 import sys
+from scipy.constants import h, c, k
 from typing import Dict, List, Optional, Any
 
 # Add project root to sys.path
@@ -208,10 +209,82 @@ def get_sensor_srf(sensor_name: str) -> Dict[str, np.ndarray]:
     else:
         raise ValueError(f"Unknown sensor: {sensor_name}")
 
+def parse_tape7_file(filepath: str) -> Optional[Dict[str, Any]]:
+    """
+    Parses a single MODTRAN tape7 output file.
+    Extracts Wavelength (um), Transmissivity (tau), Path Radiance (L_up), and Downwelling Sky Radiance (L_down).
+    
+    Args:
+        filepath (str): Path to tape7 file.
+        
+    Returns:
+        Optional[Dict[str, Any]]: Dictionary containing spectral profiles or None on error.
+    """
+    try:
+        with open(filepath, 'r') as f:
+            lines = f.readlines()
+            
+        data = []
+        header_found = False
+        for line in lines:
+            if 'FREQ(CM-1)' in line:
+                header_found = True
+                continue
+            if not header_found:
+                continue
+            if '-9999.' in line:
+                break
+            parts = line.strip().split()
+            if len(parts) >= 3:
+                try:
+                    nu = float(parts[0])
+                    tau = float(parts[1])
+                    pth_thrml = float(parts[2])
+                    bbody_t = float(parts[-1]) if len(parts) >= 4 else 270.0
+                    data.append((nu, tau, pth_thrml, bbody_t))
+                except ValueError:
+                    continue
+
+        if not data:
+            return None
+
+        arr = np.array(data)
+        nu = arr[:, 0]
+        tau = np.clip(arr[:, 1], 0.0, 1.0)
+        pth_thrml = arr[:, 2]
+        bbody_t = arr[:, 3]
+
+        # Wavelength in um (10000 / cm^-1)
+        wav = 10000.0 / nu
+        s_idx = np.argsort(wav)
+        wav = wav[s_idx]
+        tau = tau[s_idx]
+        
+        # Convert path thermal from W/(cm^2 sr cm^-1) to W/(m^2 sr um): multiply by 1e8 / wav^2
+        l_up = pth_thrml[s_idx] * 1e8 / (wav**2)
+        temp_atm = bbody_t[s_idx]
+
+        # Downwelling sky radiance: L_down = (1 - tau) * B(lambda, T_atm)
+        c1 = 2 * h * c**2
+        c2 = h * c / k
+        w_m = wav * 1e-6
+        b_atm = (c1 / (w_m**5)) / (np.exp(c2 / (w_m * temp_atm)) - 1) * 1e-6
+        l_down = (1.0 - tau) * b_atm
+
+        return {
+            'wavelengths': wav,
+            'transmission': tau,
+            'path_radiance_up': l_up,
+            'path_radiance_down': l_down
+        }
+    except Exception as e:
+        print(f"Error parsing MODTRAN tape7 file {filepath}: {e}")
+        return None
+
 def load_modtran_lut(lut_dir: str) -> List[Dict[str, Any]]:
     """
-    Loads MODTRAN tables. 
-    Falls back to synthetic data if real tables are missing.
+    Loads MODTRAN tables from disk. 
+    Falls back to synthetic data only if real tables are missing.
     
     Args:
         lut_dir (str): Directory containing LUT files.
@@ -219,10 +292,33 @@ def load_modtran_lut(lut_dir: str) -> List[Dict[str, Any]]:
     Returns:
         List[Dict[str, Any]]: List of atmospheric profiles.
     """
-    catalog_path = os.path.join(lut_dir, 'lut_catalog.csv')
     luts = []
     
-    # Synthetic Atmosphere Generation fallback
+    # 1. Attempt to load real MODTRAN tape7 files
+    tape7_files = glob.glob(os.path.join(lut_dir, "*_tape7.txt"))
+    if not tape7_files:
+        catalog_path = os.path.join(lut_dir, 'lut_catalog.csv')
+        if os.path.exists(catalog_path):
+            df_cat = pd.read_csv(catalog_path)
+            for _, row in df_cat.iterrows():
+                fpath = row['output_file']
+                if not os.path.isabs(fpath) or not os.path.exists(fpath):
+                    fpath = os.path.join(lut_dir, os.path.basename(fpath))
+                if os.path.exists(fpath):
+                    tape7_files.append(fpath)
+                    
+    for fpath in tape7_files:
+        parsed = parse_tape7_file(fpath)
+        if parsed is not None:
+            parsed['run_id'] = os.path.basename(fpath).replace('.txt', '')
+            luts.append(parsed)
+            
+    if luts:
+        print(f"Loaded {len(luts)} real MODTRAN atmospheric profiles from {lut_dir}.")
+        return luts
+
+    # 2. Synthetic Atmosphere Generation fallback if no real files exist
+    print(f"Warning: No valid MODTRAN tape7 files found in {lut_dir}. Using synthetic fallback.")
     wav_grid = np.linspace(7.0, 13.0, 2000)
     tau_base = np.exp(-0.1 * 1.5 * (1 + np.abs(wav_grid - 9.6)))
     tau_base = np.clip(tau_base, 0.0, 1.0)
