@@ -189,7 +189,10 @@ def generate_figures() -> None:
 
     plt.tight_layout()
     plt.savefig('fig1_emissivity_comparison.png', dpi=300)
-    print("Saved fig1_emissivity_comparison.png")
+    fig1_manuscript = os.path.join(PROJECT_ROOT, 'manuscript', 'figures', 'fig1_emissivity_comparison.png')
+    os.makedirs(os.path.dirname(fig1_manuscript), exist_ok=True)
+    plt.savefig(fig1_manuscript, dpi=300)
+    print(f"Saved fig1 to root and {fig1_manuscript}")
     plt.close()
 
     # --- Figure 2: Temperature Accuracy (Bar Chart) ---
@@ -244,7 +247,9 @@ def generate_figures() -> None:
     try:
         plt.tight_layout()
         plt.savefig('fig2_temperature_accuracy.png', dpi=300)
-        print("Saved fig2_temperature_accuracy.png")
+        fig2_manuscript = os.path.join(PROJECT_ROOT, 'manuscript', 'figures', 'fig2_temperature_accuracy.png')
+        plt.savefig(fig2_manuscript, dpi=300)
+        print(f"Saved fig2 to root and {fig2_manuscript}")
     except Exception as e:
         print(f"Error saving Fig 2: {e}")
 

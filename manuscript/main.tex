@@ -21,7 +21,7 @@
 \graphicspath{{figures/}}
 
 % Correct bad hyphenation here
-\hyphenation{op-ti-cal net-works semi-conduc-tor phy-sics hy-per-spec-tral emis-si-vi-ty}
+\hyphenation{op-ti-cal net-works semi-conduc-tor phy-sics hy-per-spec-tral emis-si-vi-ty tec-to-sil-i-cate pla-gio-clase di-oc-ta-he-dral phyl-lo-sil-i-cate car-bon-ate spec-trom-e-ter ra-di-ance wave-length}
 
 \begin{document}
 
@@ -30,12 +30,24 @@
 % =========================================================================
 \title{Physics-Informed Neural Networks with Sobolev Shape Regularization for Ill-Posed Temperature and Emissivity Separation Across Multispectral and Hyperspectral Thermal Infrared Sensors}
 
-\author{Atilio~Grondona%
-\thanks{A. Grondona is with the Department of Remote Sensing and Applied Geosciences. Corresponding author: A. Grondona (e-mail: atilio@example.org).}}
+\author{Atilio~Grondona$^{1,*}$, \quad Bijeesh~Kozhikkodan~Veettil$^{2}$, \quad and \quad Luis~Morales-Salinas$^{3}$\\[0.5em]
+\normalsize $^{1}$Universidade Federal do Rio Grande do Sul (UFRGS), Porto Alegre 91501-970, Brazil\\
+\small \texttt{atilio.grondona@ufrgs.br}\\[0.3em]
+\normalsize $^{2}$Department of Environmental Technology and Management, Faculty of Applied Technology,\\
+\normalsize Van Lang University, Ho Chi Minh City 700000, Vietnam\\
+\small \texttt{bkozhikkodanveettil@vlu.edu.vn}\\[0.3em]
+\normalsize $^{3}$Laboratory for Research in Environmental Sciences (LARES), Faculty of Agricultural Sciences,\\
+\normalsize University of Chile, Santiago 8820808, Chile\\
+\small \texttt{lmorales@renare.uchile.cl}\\[0.4em]
+\small $^{*}$Corresponding author: \texttt{atilio.grondona@ufrgs.br}%
+\thanks{A. Grondona is with the Universidade Federal do Rio Grande do Sul (UFRGS), Porto Alegre 91501-970, Brazil (e-mail: atilio.grondona@ufrgs.br).}%
+\thanks{B. K. Veettil is with the Department of Environmental Technology and Management, Faculty of Applied Technology, Van Lang University, Ho Chi Minh City 700000, Vietnam (e-mail: bkozhikkodanveettil@vlu.edu.vn).}%
+\thanks{L. Morales-Salinas is with the Laboratory for Research in Environmental Sciences (LARES), Faculty of Agricultural Sciences, University of Chile, Santiago 8820808, Chile (e-mail: lmorales@renare.uchile.cl).}%
+\thanks{Corresponding author: Atilio Grondona (atilio.grondona@ufrgs.br).}}
 
 % Header paper mark
 \markboth{IEEE Transactions on Geoscience and Remote Sensing,~Vol.~XX, No.~X, Month~2026}%
-{Grondona: Physics-Informed Neural Networks with Sobolev Shape Regularization for Thermal Infrared TES}
+{Grondona \MakeLowercase{\textit{et al.}}: Physics-Informed Neural Networks with Sobolev Shape Regularization for Thermal Infrared TES}
 
 \maketitle
 
@@ -184,20 +196,26 @@ From the final latent state $\bm{h}_4 \in \mathbb{R}^{512}$, two decoupled predi
 \begin{enumerate}
     \item \textbf{Kinetic Surface Temperature Head ($T_s$):} Standard terrestrial surface temperatures rarely drop below $200\text{ K}$. To eliminate unphysical negative temperatures or hyper-cold convergence traps, we formulate an analytical Softplus layer with an explicit physical pedestal:
     \begin{equation}
-    \hat{T}_s = \text{Softplus}(\bm{w}_T^T \bm{h}_4 + b_T) + 200.0 = \ln\left(1 + \exp(\bm{w}_T^T \bm{h}_4 + b_T)\right) + 200.0
+    \begin{aligned}
+    \hat{T}_s &= \text{Softplus}(\bm{w}_T^T \bm{h}_4 + b_T) + 200.0 \\
+    &= \ln\left(1 + \exp(\bm{w}_T^T \bm{h}_4 + b_T)\right) + 200.0
+    \end{aligned}
     \label{eq:temp_head}
     \end{equation}
     where $\bm{w}_T \in \mathbb{R}^{512}$ and $b_T \in \mathbb{R}$. Equation~(\ref{eq:temp_head}) guarantees $\hat{T}_s > 200.0\text{ K}$ everywhere while remaining strictly convex and smooth.
     
     \item \textbf{Spectral Emissivity Head ($\bm{\epsilon}$):} Under Kirchhoff's radiation law and conservation of energy, the emissivity of an opaque non-scattering medium is strictly bounded between zero and unity. We map the spectral output through an element-wise Sigmoid function:
     \begin{equation}
-    \hat{\bm{\epsilon}} = \sigma(\bm{W}_\epsilon \bm{h}_4 + \bm{b}_\epsilon) = \frac{1}{1 + \exp(-(\bm{W}_\epsilon \bm{h}_4 + \bm{b}_\epsilon))} \in (0, 1)^N
+    \begin{aligned}
+    \hat{\bm{\epsilon}} &= \sigma(\bm{W}_\epsilon \bm{h}_4 + \bm{b}_\epsilon) \\
+    &= \frac{1}{1 + \exp(-(\bm{W}_\epsilon \bm{h}_4 + \bm{b}_\epsilon))} \in (0, 1)^N
+    \end{aligned}
     \label{eq:eps_head}
     \end{equation}
     where $\bm{W}_\epsilon \in \mathbb{R}^{N \times 512}$ and $\bm{b}_\epsilon \in \mathbb{R}^N$.
 \end{enumerate}
 
-\subsection{Discrete 1D Sobolev Space Formulation ($W^{2,1}$)}
+\subsection{Discrete 1D Sobolev Space Formulation (\texorpdfstring{$W^{2,1}$}{W(2,1)})}
 The fundamental limitation of standard deep learning regression models in mineral spectroscopy is their reliance on zeroth-order $L_2$ loss metrics:
 \begin{equation}
 \mathcal{L}_{\text{MSE}}(\bm{\epsilon}, \hat{\bm{\epsilon}}) = \frac{1}{N}\sum_{i=1}^N (\epsilon_i - \hat{\epsilon}_i)^2
@@ -225,7 +243,7 @@ We specifically select the $L_1$ norm (rather than $L_2$) for the differential o
 
 Furthermore, to guarantee directional alignment of the spectral vectors independent of absolute scaling, we incorporate the Spectral Angle Mapper (SAM) loss:
 \begin{equation}
-\mathcal{L}_{\text{SAM}}(\bm{\epsilon}, \hat{\bm{\epsilon}}) = 1 - \frac{\sum_{i=1}^N \epsilon_i \hat{\epsilon}_i}{\sqrt{\sum_{i=1}^N \epsilon_i^2} \sqrt{\sum_{i=1}^N \hat{\epsilon}_i^2} + \delta}
+\mathcal{L}_{\text{SAM}}(\bm{\epsilon}, \hat{\bm{\epsilon}}) = 1 - \frac{\bm{\epsilon}^T \hat{\bm{\epsilon}}}{\|\bm{\epsilon}\|_2 \|\hat{\bm{\epsilon}}\|_2 + \delta}
 \label{eq:sam_def}
 \end{equation}
 where $\delta = 10^{-8}$ prevents division by zero.
@@ -262,11 +280,9 @@ Training the compound Sobolev objective from random weight initialization can in
 To evaluate the cross-resolution scalability of the proposed Sobolev-PINN framework, synthetic top-of-atmosphere (TOA) radiances are convolved with the official spectral response functions (SRF) of two benchmark thermal infrared instruments operating at contrasting spectral granularities:
 
 \begin{enumerate}
-    \item \textbf{Hyperspectral Thermal Emission Spectrometer (HyTES):}  
-    HyTES is an airborne pushbroom imaging spectrometer developed by NASA's Jet Propulsion Laboratory (JPL) \cite{hook2013hyperspectral, hulley2012hytes}. The optical system utilizes a curved grating spectrometer and a $512 \times 256$ pixel quantum well infrared photodetector (QWIP) array cooled to $40\text{ K}$. It records across $N = 256$ contiguous spectral channels spanning the thermal infrared atmospheric window between $7.50\ \mu\text{m}$ and $12.00\ \mu\text{m}$. The instrument possesses an average full-width at half-maximum (FWHM) of $17.6\text{ nm}$ and a continuous channel sampling interval of $\Delta \lambda \approx 17.6\text{ nm}$, yielding a noise-equivalent differential temperature ($NE\Delta T$) under $0.1\text{ K}$ at $300\text{ K}$.
+    \item \textbf{Hyperspectral Thermal Emission Spectrometer (HyTES):} An airborne pushbroom imaging spectrometer developed by NASA's Jet Propulsion Laboratory (JPL) \cite{hook2013hyperspectral, hulley2012hytes}. The optical system utilizes a curved grating spectrometer and a $512 \times 256$ pixel quantum well infrared photodetector (QWIP) array cooled to $40\text{ K}$. It records across $N = 256$ contiguous spectral channels spanning the thermal infrared atmospheric window between $7.50\ \mu\text{m}$ and $12.00\ \mu\text{m}$. The instrument possesses an average full-width at half-maximum (FWHM) of $17.6\text{ nm}$ and a continuous channel sampling interval of $\Delta \lambda \approx 17.6\text{ nm}$, yielding a noise-equivalent differential temperature ($NE\Delta T$) under $0.1\text{ K}$ at $300\text{ K}$.
 
-    \item \textbf{Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER):}  
-    ASTER is an orbital multispectral imaging radiometer aboard NASA's Terra spacecraft \cite{gillespie1998temperature, baldridge2009aster}. Its thermal infrared subsystem comprises five discrete broadband channels (Bands 10, 11, 12, 13, and 14) centered at nominal wavelengths of $8.291$, $8.634$, $9.071$, $10.657$, and $11.318\ \mu\text{m}$, with FWHMs of $0.354$, $0.358$, $0.358$, $0.702$, and $0.697\ \mu\text{m}$, respectively. The radiometric resolution corresponds to $NE\Delta T \le 0.3\text{ K}$ at $300\text{ K}$.
+    \item \textbf{Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER):} An orbital multispectral imaging radiometer aboard NASA's Terra spacecraft \cite{gillespie1998temperature, baldridge2009aster}. Its thermal infrared subsystem comprises five discrete broadband channels (Bands 10, 11, 12, 13, and 14) centered at nominal wavelengths of $8.291$, $8.634$, $9.071$, $10.657$, and $11.318\ \mu\text{m}$, with FWHMs of $0.354$, $0.358$, $0.358$, $0.702$, and $0.697\ \mu\text{m}$, respectively. The radiometric resolution corresponds to $NE\Delta T \le 0.3\text{ K}$ at $300\text{ K}$.
 \end{enumerate}
 
 For any continuous at-sensor spectral radiance $L_{\text{obs}}(\lambda)$, the band-integrated radiance observed in sensor channel $k$ is computed via:
@@ -292,10 +308,10 @@ In deep learning for geoscience and remote sensing, random spatial or spectral t
 
 To eliminate this vulnerability and establish an unassailable evaluation benchmark, we established a strict ``Clean-Room'' protocol. Seven chemically pure, structurally diverse mineral and terrestrial endmembers were selected from the ASTER Spectral Library Version 2.0 \cite{baldridge2009aster, salisbury1992emissivity} and physically isolated as ``Golden Targets'':
 \begin{enumerate}
-    \item \textbf{Quartz (Coarse):} Framework silicate ($\text{SiO}_2$) exhibiting the classic Reststrahlen band between $8.2$ and $8.6\ \mu\text{m}$ caused by asymmetric Si-O-Si stretching vibrations, followed by a steep inflection shoulder.
-    \item \textbf{Feldspar (Anorthite):} Plagioclase tectosilicate ($\text{CaAl}_2\text{Si}_2\text{O}_8$) characterized by a broad, smooth vibrational absorption basin spanning $9.0$ to $10.5\ \mu\text{m}$.
-    \item \textbf{Kaolinite:} Dioctahedral phyllosilicate clay ($\text{Al}_2\text{Si}_2\text{O}_5(\text{OH})_4$) exhibiting a narrow, highly diagnostic Al-OH vibrational doublet feature between $9.6$ and $10.1\ \mu\text{m}$.
-    \item \textbf{Calcite (Coarse):} Carbonate mineral ($\text{CaCO}_3$) characterized by strong fundamental planar $\text{CO}_3^{2-}$ out-of-plane bending ($\nu_2$) at $11.4\ \mu\text{m}$ and an asymmetric stretch ($\nu_3$) near $7.0\ \mu\text{m}$.
+    \item \textbf{Quartz (Coarse):} A framework silicate ($\text{SiO}_2$) exhibiting the classic Reststrahlen band between $8.2$ and $8.6\ \mu\text{m}$ caused by asymmetric Si-O-Si stretching vibrations, followed by a steep inflection shoulder.
+    \item \textbf{Feldspar (Anorthite):} A plagioclase tectosilicate ($\text{CaAl}_2\text{Si}_2\text{O}_8$) characterized by a broad, smooth vibrational absorption basin spanning $9.0$ to $10.5\ \mu\text{m}$.
+    \item \textbf{Kaolinite:} A dioctahedral phyllosilicate clay ($\text{Al}_2\text{Si}_2\text{O}_5(\text{OH})_4$) exhibiting a narrow, highly diagnostic Al-OH vibrational doublet feature between $9.6$ and $10.1\ \mu\text{m}$.
+    \item \textbf{Calcite (Coarse):} A carbonate mineral ($\text{CaCO}_3$) characterized by strong fundamental planar $\text{CO}_3^{2-}$ out-of-plane bending ($\nu_2$) at $11.4\ \mu\text{m}$ and an asymmetric stretch ($\nu_3$) near $7.0\ \mu\text{m}$.
     \item \textbf{Urban Concrete:} Aggregate-cement composite displaying moderate, intermediate emissivity with attenuated silicate signatures.
     \item \textbf{Urban Asphalt:} Bituminous hydrocarbon-aggregate mixture exhibiting low spectral contrast ($\text{MMD} < 0.02$) and near-graybody emission.
     \item \textbf{Vegetation (Green Foliage):} Biological canopy characterized by high water content, near-blackbody emissivity ($\epsilon > 0.96$), and minor cuticular organic wax inflections near $10.5\ \mu\text{m}$.
@@ -371,7 +387,7 @@ The empirical evidence demonstrates marked superiority of the Sobolev-refined fo
     \item \textbf{Global Emissivity RMSE Reduction:} For HyTES, mean $\text{RMSE}_\epsilon$ drops from $0.1509$ to $0.0921$, representing an average error reduction of \textbf{39.0\%}.
     \item \textbf{Global Spectral Alignment (SAM):} Mean SAM decreases from $6.640^\circ$ to $3.366^\circ$, a \textbf{49.3\%} improvement in directional vector congruence.
     \item \textbf{Kinetic Temperature Improvement:} Overall mean $\Delta T$ drops from $2.500\text{ K}$ to $1.441\text{ K}$ (\textbf{42.4\%} reduction).
-    \item \textbf{Curvature Precision Gain:} As detailed in Section~\ref{subsec:hytes_features}, the second-order curvature error drops by \textbf{79.7\%} ($0.03849 \rightarrow 0.00782$), validating the theoretical premise that Sobolev penalties prevent spectral oversmoothing.
+    \item \textbf{Curvature Precision Gain:} As detailed in Section~\ref{subsec:hytes_features}, curvature error drops by \textbf{79.7\%} ($0.03849 \rightarrow 0.00782$), validating the theoretical premise that Sobolev penalties prevent spectral oversmoothing.
 \end{itemize}
 
 \subsection{Hyperspectral Feature Reconstruction and Mineralogical Inversion (HyTES)}
@@ -379,9 +395,7 @@ The empirical evidence demonstrates marked superiority of the Sobolev-refined fo
 Fig.~\ref{fig:emissivity_comparison} illustrates the reconstructed emissivity spectra across three representative mineralogical test cases under 256 contiguous channels. These cases illuminate the precise physical mechanics of Sobolev training:
 
 \subsubsection{Feldspar (Anorthite) -- Best-Case Reconstruction}
-As depicted in Fig.~\ref{fig:emissivity_comparison}(a), Feldspar exhibits a wide, continuous absorption trough across $9.0\text{--}10.5\ \mu\text{m}$. The Base Model reconstructs the general envelope but incurs an emissivity RMSE of $0.0898$ and a thermal bias of $\Delta T = 3.678\text{ K}$. In contrast, the Sobolev-refined model locks onto the true spectral manifold with surgical accuracy:
-$$\text{RMSE}_\epsilon = 0.0219 \quad (\mathbf{75.6\%}\text{ reduction}), \quad \text{SAM} = 1.247^\circ \quad (\mathbf{76.1\%}\text{ reduction})$$
-Crucially, the retrieved temperature reaches sub-Kelvin precision ($\Delta T = 0.902\text{ K}$). Because the continuous absorption basin possesses non-zero first and second derivatives across more than 50 consecutive channels, the Sobolev term $w_{\text{curv}} \|\nabla^2 \bm{\epsilon} - \nabla^2 \hat{\bm{\epsilon}}\|_1$ smoothly guides backpropagation into the exact physical minimum without numerical oscillation.
+As depicted in Fig.~\ref{fig:emissivity_comparison}(a), Feldspar exhibits a wide, continuous absorption trough across $9.0\text{--}10.5\ \mu\text{m}$. The Base Model reconstructs the general envelope but incurs an emissivity RMSE of $0.0898$ and a thermal bias of $\Delta T = 3.678\text{ K}$. In contrast, the Sobolev-refined model locks onto the true spectral manifold with high fidelity, cutting $\text{RMSE}_\epsilon$ to $0.0219$ (a \textbf{75.6\%} reduction) and reducing SAM to $1.247^\circ$ (a \textbf{76.1\%} reduction). Crucially, the retrieved temperature reaches sub-Kelvin precision ($\Delta T = 0.902\text{ K}$). Because the continuous absorption basin possesses non-zero first and second derivatives across more than 50 consecutive channels, the Sobolev term $w_{\text{curv}} \|\nabla^2 \bm{\epsilon} - \nabla^2 \hat{\bm{\epsilon}}\|_1$ smoothly guides backpropagation into the exact physical minimum without numerical oscillation.
 
 \subsubsection{Quartz (Coarse) -- Resolving the Reststrahlen Doublet}
 Fig.~\ref{fig:emissivity_comparison}(b) highlights the decisive breakthrough of the proposed methodology. Quartz is characterized by an abrupt, asymmetric Reststrahlen dip between $8.2\ \mu\text{m}$ and $8.6\ \mu\text{m}$ where emissivity plummets by more than $0.35$ units over a narrow spectral interval. 
@@ -417,7 +431,10 @@ Fig.~\ref{fig:temperature_accuracy} and Table~\ref{tab:quantitative_benchmark} c
 
 \textbf{Thermodynamic Radiance Coupling:}  
 In thermal infrared radiative transfer, temperature and emissivity errors are inextricably linked through Planck's blackbody law:
-$$L_{\text{surf}}(\lambda) \approx \epsilon(\lambda) B(\lambda, T_s)$$
+\begin{equation}
+L_{\text{surf}}(\lambda) \approx \epsilon(\lambda) B(\lambda, T_s)
+\label{eq:rad_coupling}
+\end{equation}
 If an unregularized network produces an oversmoothed emissivity spectrum that underestimates the depth of a Reststrahlen absorption band, the predicted surface radiance $\hat{\epsilon} B(\hat{T}_s)$ becomes locally deficient. To compensate for this spectral deficit and match the broadband top-of-atmosphere radiance, an unconstrained optimizer is forced to artificially increase $\hat{T}_s$, generating a false thermal bias of $2\text{--}3.5\text{ K}$.
 
 By enforcing discrete Sobolev regularization ($W^{2,1}$), the network accurately recovers the true depth and curvature of the mineral absorption trough. Consequently, this false compensation mechanism is eliminated, allowing the analytical Softplus temperature head (Eq.~\ref{eq:temp_head}) to converge onto the true kinetic temperature. For critical silicate endmembers such as Feldspar and Kaolinite, the retrieved temperature achieves sub-Kelvin precision ($\Delta T = 0.902\text{ K}$ and $0.388\text{ K}$, respectively), fully satisfying the strict radiometric thresholds demanded by NASA SBG and ESA LSTM orbital mission baselines \cite{cawsenicholson2021nasa, koetz2018high}.
@@ -429,11 +446,15 @@ By enforcing discrete Sobolev regularization ($W^{2,1}$), the network accurately
 
 \subsection{Functional Analysis Foundation: Resolving the Fredholm Inverse Dilemma}
 In thermal remote sensing, inverting the Fredholm integral of the first kind (Eq.~\ref{eq:channel_rad}) is notoriously ill-posed in the Hadamard sense: small observational perturbations in TOA radiance produce arbitrarily large variations in retrieved spectral emissivity. Classical machine learning approaches address this instability by minimizing Mean Squared Error ($L_2$ norm), which implicitly estimates the conditional expectation of emissivity given observed radiance:
-$$\hat{\bm{\epsilon}}_{L_2}(\bm{L}_{\text{obs}}) = \mathbb{E}[\bm{\epsilon} \mid \bm{L}_{\text{obs}}]$$
+\begin{equation}
+\hat{\bm{\epsilon}}_{L_2}(\bm{L}_{\text{obs}}) = \mathbb{E}[\bm{\epsilon} \mid \bm{L}_{\text{obs}}]
+\end{equation}
 While the conditional expectation minimizes overall variance across training batches, it acts as a low-pass smoothing filter. For narrow, high-frequency mineral features---such as the asymmetric Quartz Reststrahlen band at $8.2\text{--}8.6\ \mu\text{m}$ or the Kaolinite Al-OH doublet at $9.6\text{--}10.1\ \mu\text{m}$---$L_2$ minimization flattens the acute inflection troughs into broad, shallow depressions (as demonstrated by the Base Model in Fig.~\ref{fig:emissivity_comparison}).
 
 To resolve this defect, IATIR reformulates the inversion within the discrete Sobolev space $W^{2,1}(\Omega)$ \cite{czarnecki2017sobolev, son2021sobolev}. By supervising first differences ($\nabla \bm{\epsilon}$) and second differences ($\nabla^2 \bm{\epsilon}$), the network is constrained to the tangent bundle of the physical spectral manifold. Crucially, enforcing an \textbf{$L_1$ norm} over the derivative operators acts as a **Total Variation (TV) regularizer**:
-$$\text{TV}(\bm{\epsilon}) = \sum_{i=1}^{N-1} |\epsilon_{i+1} - \epsilon_i|$$
+\begin{equation}
+\text{TV}(\bm{\epsilon}) = \sum_{i=1}^{N-1} |\epsilon_{i+1} - \epsilon_i|
+\end{equation}
 Unlike classical $L_2$ Tikhonov derivative penalties (which penalize steep slopes quadratically and force sharp boundaries to round off), the $L_1$ penalty is strictly linear. This allows genuine physical discontinuities (such as the steep $0.35$ drop in Quartz emissivity over $35\text{ nm}$) to remain crisp without incurring an explosive penalty, while simultaneously driving spurious, high-frequency noise gradients in flat spectral regions strictly to zero. The empirical proof is delivered in Table~\ref{tab:quantitative_benchmark}, where curvature error drops by \textbf{79.7\%} ($0.03849 \rightarrow 0.00782$).
 
 \subsection{Overcoming the Empirical MMD Graybody Singularity}
@@ -450,11 +471,12 @@ The catastrophic vulnerability of Eq.~(\ref{eq:mmd_power_law}) lies in its analy
 \label{eq:mmd_derivative}
 \end{equation}
 Because the exponent $c < 1$, the derivative exhibits a singularity as $\text{MMD} \to 0$:
-$$\lim_{\text{MMD} \to 0} \left| \frac{d\epsilon_{\min}}{d\text{MMD}} \right| = \infty$$
+\begin{equation}
+\lim_{\text{MMD} \to 0} \left| \frac{d\epsilon_{\min}}{d\text{MMD}} \right| = \infty
+\end{equation}
 Over low-contrast surfaces (e.g., urban asphalt, calm water, snow, and dense vegetation), the true physical contrast approaches zero ($\text{MMD} \le 0.02$). Under realistic sensor noise ($\pm 0.1\text{ K}$) or atmospheric correction residuals, small fluctuations in observed channel radiances cause $\text{MMD}$ to approach zero erratically. The infinite slope in Eq.~(\ref{eq:mmd_derivative}) violently amplifies these fluctuations, producing unphysical predictions where $\epsilon_{\min} > 1.0$ or triggering numerical clipping that introduces large thermal biases exceeding $3\text{ K}$ \cite{perezplanells2017retrieval}.
 
-IATIR completely bypasses the empirical MMD regression. The network architecture couples Planck's radiation law directly with strictly bounded activation layers (Sigmoid for $\bm{\epsilon} \in (0, 1)$ and shifted Softplus for $T_s > 200\text{ K}$). As documented in Table~\ref{tab:quantitative_benchmark}, on Urban Asphalt ($\text{MMD} \approx 0.015$), IATIR achieves near-perfect fidelity without numerical divergence:
-$$\text{RMSE}_\epsilon = 0.0104, \quad \text{SAM} = 0.627^\circ, \quad \Delta T = 0.747\text{ K}$$
+IATIR completely bypasses the empirical MMD regression. The network architecture couples Planck's radiation law directly with strictly bounded activation layers (Sigmoid for $\bm{\epsilon} \in (0, 1)$ and shifted Softplus for $T_s > 200\text{ K}$). As documented in Table~\ref{tab:quantitative_benchmark}, on Urban Asphalt ($\text{MMD} \approx 0.015$), IATIR achieves near-perfect fidelity without numerical divergence ($\text{RMSE}_\epsilon = 0.0104$, $\text{SAM} = 0.627^\circ$, and $\Delta T = 0.747\text{ K}$).
 This demonstrates that physics-informed neural formulations can successfully eliminate the most notorious operational breakdown mode of classical TES algorithms.
 
 \subsection{Integrity of Experimental Validation (Clean-Room Defense)}
